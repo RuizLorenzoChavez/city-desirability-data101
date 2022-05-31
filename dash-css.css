@@ -32,11 +32,18 @@
     position: absolute;
     width: 1244px;
     height: 0px;
-    left: 91px;
+    left: 100px;
     top: 175%;
     border: 2px solid #DBDBDB;
 }
 
 #body {
     background-color: #F2F0F0;
+}
+
+#CityC-start{
+    position: absolute;
+    float: left;
+    font-family: 'Mulish', sans-serif;
+    margin-top: 5%;
 }
