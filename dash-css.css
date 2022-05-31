@@ -10,17 +10,33 @@
 }
 #CityC-header {
     font-family: 'Bree Serif', serif;
-    font-size:40px;
-    width: 33%;
+    font-size: 40px;
+    width: 30%;
+    float: left;
 }
 
 #CityC-desc {
     color: #807A7A;
     font-family: 'Mulish', sans-serif;
-    width: 33%;
-    float: right;
+    width: 40%;
+    float: left;
+    margin-top: 1.7%;
+    margin-left: -2%;
 }
 
 #button-text {
     font-family: 'Mulish', sans-serif;
+}
+
+#CityC-line {
+    position: absolute;
+    width: 1244px;
+    height: 0px;
+    left: 91px;
+    top: 175%;
+    border: 3px solid #DBDBDB;
+}
+
+#body {
+    background-color: #F2F0F0;
 }
