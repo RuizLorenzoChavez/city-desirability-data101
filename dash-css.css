@@ -1,0 +1,10 @@
+#title-text {
+    color: #eeeeee;
+    font-family: 'Bree Serif', serif;
+}
+
+#head {
+    height: 90px;
+    background-color: #303030;
+    box-shadow: -1px -1px 15px black;
+}
