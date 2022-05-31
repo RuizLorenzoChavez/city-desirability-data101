@@ -3,7 +3,7 @@
     font-family: 'Bree Serif', serif;
 }
 
-#head {
+#navbar {
     height: 85px;
     background-color: #303030;
     box-shadow: -1px -1px 15px black;
@@ -21,7 +21,7 @@
     width: 40%;
     float: left;
     margin-top: 1.7%;
-    margin-left: -2%;
+    margin-left: -5%;
 }
 
 #button-text {
@@ -46,4 +46,19 @@
     float: left;
     font-family: 'Mulish', sans-serif;
     margin-top: 5%;
+}
+
+.description {
+    font-size:16px;
+    font-style: italic;
+    color: #807A7A;
+    font-family: 'Mulish', sans-serif;
+}
+
+.section-header {
+    font-family: 'Bree Serif', serif;
+}
+
+#nav-arrow {
+    height: 50px;
 }
