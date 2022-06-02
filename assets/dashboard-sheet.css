@@ -37,8 +37,8 @@
     border: 2px solid #DBDBDB;
 }
 
-#body {
-    background-color: #F2F0F0;
+body {
+    background: #F2F0F0;
 }
 
 #CityC-start{
