@@ -1,3 +1,11 @@
+body {
+    background: #F2F0F0;
+}
+
+h4, h5 {
+    font-family: 'Bree Serif', serif;
+}
+
 #title-text {
     color: #eeeeee;
     font-family: 'Bree Serif', serif;
@@ -7,6 +15,93 @@
     height: 85px;
     background-color: #303030;
     box-shadow: -1px -1px 15px black;
+}
+
+#button-text {
+    font-family: 'Mulish', sans-serif;
+}
+
+#nav-arrow {
+    height: 50px;
+}
+
+.description {
+    font-size:16px;
+    font-style: italic;
+    color: #807A7A;
+    font-family: 'Mulish', sans-serif;
+}
+
+.section-header {
+    font-family: 'Bree Serif', serif;
+}
+
+.card-half {
+    width: 49%;
+    height: 450px;
+    background-color: #ffffff;
+    border-radius: 30px;
+    box-shadow: 10px 5px 25px -15px black;
+}
+
+.card-full {
+    width: 100%;
+    height: 600px;
+    background-color: #ffffff;
+    border-radius: 30px;
+    box-shadow: 10px 5px 25px -15px black;
+}
+
+.card-full-l {
+    width: 100%;
+    height: 500px;
+    background-color: #ffffff;
+    border-radius: 30px;
+    box-shadow: 10px 5px 25px -15px black;
+}
+
+.card-full-xl {
+    width: 100%;
+    height: 800px;
+    background-color: #ffffff;
+    border-radius: 30px;
+    box-shadow: 10px 5px 25px -15px black;
+}
+
+.modebar{
+    display: none !important;
+}
+
+.radio-group .form-check {
+    padding-left: 0;
+}
+
+.radio-group .btn-group > .form-check:not(:last-child) > .btn {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.radio-group .btn-group > .form-check:not(:first-child) > .btn {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    margin-left: -1px;
+}
+
+/*
+#CityC-line {
+    position: absolute;
+    width: 1244px;
+    height: 0px;
+    left: 100px;
+    top: 175%;
+    border: 2px solid #DBDBDB;
+}
+
+#CityC-start{
+    position: absolute;
+    float: left;
+    font-family: 'Mulish', sans-serif;
+    margin-top: 5%;
 }
 #CityC-header {
     font-family: 'Bree Serif', serif;
@@ -23,64 +118,4 @@
     margin-top: 1.7%;
     margin-left: -5%;
 }
-
-#button-text {
-    font-family: 'Mulish', sans-serif;
-}
-
-#CityC-line {
-    position: absolute;
-    width: 1244px;
-    height: 0px;
-    left: 100px;
-    top: 175%;
-    border: 2px solid #DBDBDB;
-}
-
-body {
-    background: #F2F0F0;
-}
-
-#CityC-start{
-    position: absolute;
-    float: left;
-    font-family: 'Mulish', sans-serif;
-    margin-top: 5%;
-}
-
-.description {
-    font-size:16px;
-    font-style: italic;
-    color: #807A7A;
-    font-family: 'Mulish', sans-serif;
-}
-
-.section-header {
-    font-family: 'Bree Serif', serif;
-}
-
-.card-full {
-    width: 100%;
-    height: 550px;
-    background-color: #ffffff;
-    border-radius: 10px;
-}
-
-.card-half {
-    width: 49%;
-    height: 510px;
-    background-color: #ffffff;
-    border-radius: 10px;
-}
-
-#nav-arrow {
-    height: 50px;
-}
-
-.modebar{
-    display: none !important;
-}
-
-h5 {
-    font-family: 'Bree Serif', serif;
-}
+*/
