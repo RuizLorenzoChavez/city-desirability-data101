@@ -445,63 +445,27 @@ def update_scatter(df_num, budget):
               scatter_map = px.scatter_mapbox(df, 
                                               lat="latitude", 
                                               lon="longitude",
-                                              hover_name="listing",
-                                              color='city', 
-                                              size='price', 
+                                              hover_name="listing", 
                                               width=1170, 
                                               height=780,  
                                               center={'lat': 14.59665, 'lon': 121.0369}, 
                                               zoom=11.5, 
-                                              opacity=.1)
+                                              opacity=.5)
               
               return scatter_map 
-       if df_num == 2:
+       else:
               df = prop4rent.query(f"price <= {budget}")
               scatter_map = px.scatter_mapbox(df, 
                                               lat="latitude", 
                                               lon="longitude",
-                                              hover_name="listing",
-                                              color='city', 
-                                              size='price', 
+                                              hover_name="listing",  
                                               width=1170,
                                               height=780,   
                                               center={'lat': 14.5663, 'lon': 121.0372}, 
                                               zoom=11.5, 
-                                              opacity=.1)
+                                              opacity=.5)
               return scatter_map
 
-
-"""
-       if df_num == 1:
-              df = prop4sale_geo
-              scatter_map = px.scatter_mapbox(df, 
-                                              lat="latitude", 
-                                              lon="longitude",
-                                              hover_name="listing",
-                                              color='city', 
-                                              size='price', 
-                                              width=1170, 
-                                              height=780,  
-                                              center={'lat': 14.59665, 'lon': 121.0369}, 
-                                              zoom=11.5, 
-                                              opacity=.1)
-              
-              return scatter_map
-       if df_num == 2:
-              df = prop4rent
-              scatter_map = px.scatter_mapbox(df, 
-                                              lat="latitude", 
-                                              lon="longitude",
-                                              hover_name="listing",
-                                              color='city', 
-                                              size='price', 
-                                              width=1170,
-                                              height=780,   
-                                              center={'lat': 14.5663, 'lon': 121.0372}, 
-                                              zoom=11.5, 
-                                              opacity=.1)
-              return scatter_map
-"""
 #  for treemap
 @app.callback(
        Output('treemap', 'figure'),
