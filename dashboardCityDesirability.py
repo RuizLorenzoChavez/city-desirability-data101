@@ -445,12 +445,14 @@ def update_scatter(df_num, budget):
               scatter_map = px.scatter_mapbox(df, 
                                               lat="latitude", 
                                               lon="longitude",
-                                              hover_name="listing", 
+                                              hover_name="listing",
+                                              color='price', 
                                               width=1170, 
                                               height=780,  
                                               center={'lat': 14.59665, 'lon': 121.0369}, 
                                               zoom=11.5, 
-                                              opacity=.5)
+                                              opacity=.5, 
+                                              color_continuous_scale= px.colors.sequential.algae)
               
               return scatter_map 
        else:
@@ -458,12 +460,14 @@ def update_scatter(df_num, budget):
               scatter_map = px.scatter_mapbox(df, 
                                               lat="latitude", 
                                               lon="longitude",
-                                              hover_name="listing",  
+                                              hover_name="listing", 
+                                              color='price', 
                                               width=1170,
                                               height=780,   
                                               center={'lat': 14.5663, 'lon': 121.0372}, 
                                               zoom=11.5, 
-                                              opacity=.5)
+                                              opacity=.5,
+                                              color_continuous_scale= px.colors.sequential.algae)
               return scatter_map
 
 #  for treemap
