@@ -51,6 +51,16 @@ ave_jobs_city = ave_jobs_city.set_index('city')
 #  data is filtered to remove outliers in the latitude column
 prop4sale_geo = prop4sale[~((prop4sale.latitude.gt(15)) | prop4sale.latitude.lt(14))]
 
+#  aggregating data for bar chart—frequency count for schools in each city
+#  creating a static bar chart as well
+city_dist = schools.city.value_counts().reset_index()
+city_dist = city_dist.rename(columns={'index': 'city', 'city': 'count'})
+
+bar_chart = px.bar(city_dist, 
+                   x='city',
+                   y='count',
+                   width=800,
+                   height=500)
 
 ######################################################## LAYOUT ########################################################
 
@@ -148,22 +158,22 @@ app.layout = html.Div(children=[html.Header(id='navbar',
                                                                                                  children=['↓'])])]),
                                                       html.Hr()])
                                    ]),
-                html.Div(className='container-lg card-full',
+                html.Div(className='container-lg card-full-l',
                          children=[html.Div(className='container-lg',
                                             children=[html.Div(className='row',
-                                                               children=[html.Div(className='col-lg-6',
-                                                                                  children=[dcc.Graph(id='choropleth-map')]),
-                                                                         html.Div(className='col-lg-3 radio-group my-2 offset-lg-3',
-                                                                                                     children=[html.Br(),
-                                                                                                               dbc.RadioItems(id='radio-section1',
-                                                                                                                              className='btn-group radio',
-                                                                                                                              inputClassName='btn-check',
-                                                                                                                              labelClassName='btn btn-outline-dark',
-                                                                                                                              labelCheckedClassName='active',
-                                                                                                                              options=[{'label': 'for sale', 'value': 1},
-                                                                                                                                       {'label': 'for rent', 'value': 2},
-                                                                                                                                       {'label': 'salaries', 'value': 3}]
-                                                                                                                              ,value=1)])
+                                                               children=[html.Div(className='col-lg-6 radio-group my-2',
+                                                                                  children=[html.Br(),
+                                                                                            dbc.RadioItems(id='radio-section1',
+                                                                                                           className='btn-group radio',
+                                                                                                           inputClassName='btn-check',
+                                                                                                           labelClassName='btn btn-outline-dark',
+                                                                                                           labelCheckedClassName='active',
+                                                                                                           options=[{'label': 'for sale', 'value': 1},
+                                                                                                                    {'label': 'for rent', 'value': 2},
+                                                                                                                    {'label': 'salaries', 'value': 3}],
+                                                                                                           value=1)]),
+                                                                         html.Div(className='col-lg-6',
+                                                                                  children=[dcc.Graph(id='choropleth-map')])
                                                                          ])])
                                    ]),
                 html.Br(),
@@ -236,9 +246,9 @@ app.layout = html.Div(children=[html.Header(id='navbar',
                                                       html.H5(className='text-center my-4',
                                                               children=['Slide to set your budget']),
                                                       html.Br(),
-                                                      dcc.Slider(0, 20, marks=None,
+                                                      dcc.Slider(marks=None,
                                                                  id='slider-scatter',
-                                                                 
+                                                                 tooltip={"placement": "bottom", "always_visible": False}
                                                                  ),
                                                       html.Br(),
                                                       html.Br(),
@@ -274,14 +284,14 @@ app.layout = html.Div(children=[html.Header(id='navbar',
                                                       html.Hr()])
                                    ]), 
                 html.Br(),
-                html.Div(className='container-lg card-full-l',
+                html.Div(className='container-lg card-full',
                          children=[html.Div(className='container-lg',
                                             children=[html.Div(className='row',
                                                                children=[html.Div(className='col-lg-7',
-                                                                                  children=[dcc.Graph(id='bar')])])])
+                                                                                  children=[dcc.Graph(id='bar', figure=bar_chart)])])])
                                    ]),
                 html.Br(),
-                html.Div(className='container-lg card-full-l',
+                html.Div(className='container-lg card-full',
                          children=[html.Div(className='container-lg',
                                             children=[html.Div(className='row',
                                                                children=[html.Div(className='col-lg-7',
@@ -402,14 +412,66 @@ def update_histogram(df_num, city):
                      hist_title = 'Distribution of Salaries'
                      return hist, hist_title 
 
-#  for scatter map
+#  for slider
+@app.callback(
+       Output('slider-scatter', 'min'),
+       Output('slider-scatter', 'max'),
+       Output('slider-scatter', 'value'),
+       Input('radio-section2', 'value'),
+)
+def update_slider(df_num):       
+       if df_num == 1:
+              df = prop4sale_geo
+              mini = df.price.min()
+              maxi = df.price.max()
+              value = df.price.median()
+              return mini, maxi, value
+       else:
+              df = prop4rent
+              mini = df.price.min()
+              maxi = df.price.max()
+              value = df.price.median()
+              return mini, maxi, value
+       
+#  for scatter map 
 @app.callback(
        Output('scatter-map', 'figure'),
-  
        Input('radio-section2', 'value'),
        Input('slider-scatter', 'value')
 )
-def update_scatter(df_num, range):       
+def update_scatter(df_num, budget):
+       if df_num == 1:
+              df = prop4sale_geo.query(f"price <= {budget}")
+              scatter_map = px.scatter_mapbox(df, 
+                                              lat="latitude", 
+                                              lon="longitude",
+                                              hover_name="listing",
+                                              color='city', 
+                                              size='price', 
+                                              width=1170, 
+                                              height=780,  
+                                              center={'lat': 14.59665, 'lon': 121.0369}, 
+                                              zoom=11.5, 
+                                              opacity=.1)
+              
+              return scatter_map 
+       if df_num == 2:
+              df = prop4rent.query(f"price <= {budget}")
+              scatter_map = px.scatter_mapbox(df, 
+                                              lat="latitude", 
+                                              lon="longitude",
+                                              hover_name="listing",
+                                              color='city', 
+                                              size='price', 
+                                              width=1170,
+                                              height=780,   
+                                              center={'lat': 14.5663, 'lon': 121.0372}, 
+                                              zoom=11.5, 
+                                              opacity=.1)
+              return scatter_map
+
+
+"""
        if df_num == 1:
               df = prop4sale_geo
               scatter_map = px.scatter_mapbox(df, 
@@ -438,12 +500,32 @@ def update_scatter(df_num, range):
                                               center={'lat': 14.5663, 'lon': 121.0372}, 
                                               zoom=11.5, 
                                               opacity=.1)
-       
-       return scatter_map
-              
+              return scatter_map
+"""
+#  for treemap
+@app.callback(
+       Output('treemap', 'figure'),
+       Input('bar', 'clickData')
+)
+def update_treemap(location):
+       try:
+              select_city = location['points'][0]["x"]
+              df = schools.query(f'city == "{select_city}"')
+              treemap = px.treemap(df, 
+                                   path=['sector','curricular_class', 'school_subclass', 'school_name'], 
+                                   width=800,
+                                   height=500, 
+                                   color='curricular_class')
+              return treemap
+       except TypeError:
+              df = schools
+              treemap = px.treemap(df, 
+                                   path=['sector','curricular_class', 'school_subclass', 'school_name'], 
+                                   width=800,
+                                   height=500, 
+                                   color='curricular_class')
+              return treemap
 
 #  runs server
 if __name__ == '__main__':
-    app.run_server(debug=True)
-    
-  
+       app.run_server(debug=True)
