@@ -1,3 +1,4 @@
+ls
 from select import select
 from dash import Dash, html, dcc
 from dash.dependencies import Input, Output
@@ -52,17 +53,31 @@ ave_jobs_city = ave_jobs_city.set_index('city')
 prop4sale_geo = prop4sale[~((prop4sale.latitude.gt(15)) | prop4sale.latitude.lt(14))]
 
 #  aggregating data for bar chart—frequency count for schools in each city
-#  creating a static bar chart as well
 city_dist = schools.city.value_counts().reset_index()
 city_dist = city_dist.rename(columns={'index': 'city', 'city': 'count'})
 
+######################################################## LAYOUT ########################################################
+#  setting color map
+city_colors = {'quezon': '#9369a8',
+               'manila': '#cd4a77',
+               'taguig': '#3078b4',
+               'pasig': '#9fdbad',
+               'makati': '#f3df4d',
+               'mandaluyong': '#feae51',
+               'san juan': '#ec8b83'}
+
+#  creating a static bar chart
 bar_chart = px.bar(city_dist, 
                    x='city',
                    y='count',
                    width=800,
-                   height=500)
+                   height=500,
+                   color='city',
+                   color_discrete_map=city_colors)
 
-######################################################## LAYOUT ########################################################
+#  hiding legends 
+bar_chart.update_layout(showlegend=False)
+
 
 #  external_stylesheets to be used for creating the HTML layout
 external_stylesheets = [
@@ -143,7 +158,7 @@ app.layout = html.Div(children=[html.Header(id='navbar',
                                                                                  children=['City Comparison\t\t\t\t\t',
                                                                                            html.Span(className='description',
                                                                                                      children=['to compare cities according to ammenities'])])]),
-                                                      html.Div(className='col-lg-1',
+                                                      html.Div(className='col-lg-2',
                                                                children=[html.Div(id='nav1',
                                                                                 className='btn-group col-lg-12',
                                                                                 role='group',
@@ -186,9 +201,7 @@ app.layout = html.Div(children=[html.Header(id='navbar',
                                                                          dcc.Graph(id='horizontal-bar')]),
                                                       html.Div(className='col-lg-5 card-half',
                                                                children=[html.Div(className='row',
-                                                                                  children=[html.H4(className='text-center my-3',
-                                                                                                    id='distribution-title')]),
-                                                                         dcc.Graph(id='histogram')])])
+                                                                                  children=[dcc.Graph(id='histogram')])])])
                                    ]),
                 html.Br(),
                 html.Br(),
@@ -204,7 +217,7 @@ app.layout = html.Div(children=[html.Header(id='navbar',
                                                                                  children=['Property Comparison\t\t\t\t\t',
                                                                                            html.Span(className='description',
                                                                                                      children=['to compare properties according to their prices in their respective locations'])])]),
-                                                      html.Div(className='col-lg-1',
+                                                      html.Div(className='col-lg-2',
                                                                children=[html.Div(id='nav2',
                                                                                 className='btn-group col-lg-12',
                                                                                 role='group',
@@ -246,8 +259,7 @@ app.layout = html.Div(children=[html.Header(id='navbar',
                                                       html.H5(className='text-center my-4',
                                                               children=['Slide to set your budget']),
                                                       html.Br(),
-                                                      dcc.Slider(marks=None,
-                                                                 id='slider-scatter',
+                                                      dcc.Slider(id='slider-scatter',
                                                                  tooltip={"placement": "bottom", "always_visible": False}
                                                                  ),
                                                       html.Br(),
@@ -268,7 +280,7 @@ app.layout = html.Div(children=[html.Header(id='navbar',
                                                                                  children=['School Comparison\t\t\t\t\t',
                                                                                            html.Span(className='description',
                                                                                                      children=['to compare the number of schools in each city'])])]),
-                                                      html.Div(className='col-lg-1',
+                                                      html.Div(className='col-lg-2',
                                                                children=[html.Div(id='nav3',
                                                                                 className='btn-group col-lg-12',
                                                                                 role='group',
@@ -293,9 +305,9 @@ app.layout = html.Div(children=[html.Header(id='navbar',
                 html.Br(),
                 html.Div(className='container-lg card-full',
                          children=[html.Div(className='container-lg',
-                                            children=[html.Div(className='row',
-                                                               children=[html.Div(className='col-lg-7',
-                                                                                  children=[dcc.Graph(id='treemap')])])])
+                                            children=[html.Div([html.Div(className='col-lg-7',
+                                                                         children=[dcc.Graph(id='treemap')])],
+                                                               className='row')])
                                    ]),
                 html.Br(),
                 html.Br()
@@ -322,7 +334,7 @@ def update_choropleth(df_num):
                                                zoom=10,
                                                width=600,
                                                height=600,
-                                               color_continuous_scale= px.colors.sequential.Reds)
+                                               color_continuous_scale=px.colors.sequential.Reds)
        elif df_num == 2:
               choro_map = px.choropleth_mapbox(ave_prop4rent_city, 
                                                geojson=ave_prop4rent_city.geometry,
@@ -333,7 +345,7 @@ def update_choropleth(df_num):
                                                zoom=10,
                                                width=600,
                                                height=600,
-                                               color_continuous_scale= px.colors.sequential.Blues)
+                                               color_continuous_scale=px.colors.sequential.Blues)
        else:
               choro_map = px.choropleth_mapbox(ave_jobs_city, 
                                                geojson=ave_jobs_city.geometry,
@@ -344,7 +356,7 @@ def update_choropleth(df_num):
                                                zoom=10,
                                                width=600,
                                                height=600,
-                                               color_continuous_scale= px.colors.sequential.Greens)
+                                               color_continuous_scale=px.colors.sequential.Greens)
        return choro_map
 
 #  for horizontal bar & title 
@@ -352,7 +364,6 @@ def update_choropleth(df_num):
 #  for histogram
 @app.callback(
        Output('histogram', 'figure'),
-       Output('distribution-title', 'children'),
        Input('radio-section1', 'value'),
        Input('choropleth-map', 'clickData')
 )
@@ -362,55 +373,54 @@ def update_histogram(df_num, city):
                      select_city = city['points'][0]["location"]
                      df = prop4sale.query(f'city == "{select_city}"')
                      hist = px.histogram(df, 
-                                         x='price', 
-                                         height=383,
-                                         color_discrete_sequence= ['red'])
-                     hist_title = f'Distribution of Property Prices in {select_city.capitalize()} City'
-                     return hist, hist_title 
+                                         x='price',
+                                         title = f'Distribution of Property Prices in {select_city.capitalize()} City', 
+                                         height=430,
+                                         color_discrete_sequence= [city_colors[city['points'][0]["location"]]])
+                     return hist
               except TypeError:
                      df = prop4sale
                      hist = px.histogram(df, x='price', 
-                                         height=383, 
-                                         color_discrete_sequence= 
-                                         ['red'])
-                     hist_title = 'Distribution of Property Prices in Selected Cities'
-                     return hist, hist_title
+                                         height=430, 
+                                         color_discrete_sequence=['#b30000'],
+                                         title = 'Distribution of Property Prices in Selected Cities')
+                     return hist
        elif df_num == 2:
               try:
                      select_city = city['points'][0]["location"]
                      df = prop4rent.query(f'city == "{select_city}"')
                      hist = px.histogram(df, 
                                          x='price', 
-                                         height=383,
-                                         color_discrete_sequence= ['blue'])
-                     hist_title = f'Distribution of Property Prices in {select_city.capitalize()} City'
-                     return hist, hist_title 
+                                         title = f'Distribution of Property Prices in {select_city.capitalize()} City',
+                                         height=430,
+                                         color_discrete_sequence= [city_colors[city['points'][0]["location"]]])
+                     return hist
               except TypeError:
                      df = prop4rent
                      hist = px.histogram(df, 
                                          x='price', 
-                                         height=383,
-                                         color_discrete_sequence= ['blue'])
-                     hist_title = 'Distribution of Property Prices (Rent)'
-                     return hist, hist_title 
+                                         height=430,
+                                         color_discrete_sequence=['#004999'],
+                                         title = 'Distribution of Property Prices (Rent)')
+                     return hist
        else:
               try:
                      select_city = city['points'][0]["location"]
                      df = jobs.query(f'city == "{select_city}"')
                      hist = px.histogram(df, 
                                          x='salary', 
-                                         height=383,
-                                         color_discrete_sequence= ['green'])
-                     hist_title = f'Distribution of Salaries Offered in {select_city.capitalize()} City'
-                     return hist, hist_title 
+                                         title = f'Distribution of Salaries Offered in {select_city.capitalize()} City',
+                                         height=430,
+                                         color_discrete_sequence= [city_colors[city['points'][0]["location"]]])
+                     return hist, 
               except TypeError:
                      df = jobs
                      hist = px.histogram(df, 
                                          x='salary', 
-                                         height=383,
-                                         color_discrete_sequence= ['green'])
-                     hist_title = 'Distribution of Salaries'
-                     return hist, hist_title 
+                                         height=430,
+                                         color_discrete_sequence=['#357a38'],
+                                         title = 'Distribution of Salaries')
+                     return hist
 
 #  for slider
 @app.callback(
@@ -452,8 +462,9 @@ def update_scatter(df_num, budget):
                                               center={'lat': 14.59665, 'lon': 121.0369}, 
                                               zoom=11.5, 
                                               opacity=.5, 
-                                              color_continuous_scale= px.colors.sequential.algae)
-              
+                                              color_continuous_scale=px.colors.sequential.algae)
+              scatter_map.update_layout(transition=dict(duration=1400,
+                                                    easing="circle-in"))
               return scatter_map 
        else:
               df = prop4rent.query(f"price <= {budget}")
@@ -467,7 +478,10 @@ def update_scatter(df_num, budget):
                                               center={'lat': 14.5663, 'lon': 121.0372}, 
                                               zoom=11.5, 
                                               opacity=.5,
-                                              color_continuous_scale= px.colors.sequential.algae)
+                                              color_continuous_scale=px.colors.sequential.algae)
+              scatter_map.update_layout(transition=dict(duration=1400,
+                                                    easing="circle-in"))
+              
               return scatter_map
 
 #  for treemap
@@ -484,6 +498,8 @@ def update_treemap(location):
                                    width=800,
                                    height=500, 
                                    color='curricular_class')
+              treemap.update_layout(transition=dict(duration=750,
+                                                    easing="quad"))
               return treemap
        except TypeError:
               df = schools
@@ -493,7 +509,9 @@ def update_treemap(location):
                                    height=500, 
                                    color='curricular_class')
               return treemap
-
+              
+              
 #  runs server
 if __name__ == '__main__':
        app.run_server(debug=True)
+       
