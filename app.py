@@ -1,13 +1,10 @@
-from select import select
 from dash import Dash, html, dcc
 from dash.dependencies import Input, Output
 import dash_bootstrap_components as dbc
 import plotly.express as px
-import numpy as np
 import pandas as pd
 import geopandas as gpd
 import pyproj
-from traitlets import Type
 
 ########################################################DATA PROCESSING########################################################
 #  loading the data from the cleaned datasets
