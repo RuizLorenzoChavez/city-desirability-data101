@@ -121,6 +121,7 @@ external_stylesheets = [
 #  initialize dashboard
 app = Dash(__name__, external_stylesheets=external_stylesheets, title='City Desirability Dashboard')
 
+server = app.server
 
 #  dashboard layout
 app.layout = html.Div(children=[html.Header(id='navbar', 
@@ -215,7 +216,7 @@ app.layout = html.Div(children=[html.Header(id='navbar',
                                                                                                    className='p-title'),
                                                                                             html.P('''Shown here is the map of Metro Manila that displays the median in their respective data. 
                                                                                                    Once you have chosen your dataset, you will see here is the expected average per city, and their respective map. 
-                                                                                                   You can also click on the map to see more information about your selected amenity.''',
+                                                                                                   You can also click on the map to see more information about your selected amenity which is shown below.''',
                                                                                                    className='p-body'),
                                                                                             html.P('How to use:',
                                                                                                    className='p-title'),
