@@ -5,6 +5,7 @@ import plotly.express as px
 import pandas as pd
 import geopandas as gpd
 import pyproj
+import gunicorn
 
 ########################################################DATA PROCESSING########################################################
 #  loading the data from the cleaned datasets
