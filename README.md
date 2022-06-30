@@ -7,7 +7,7 @@ It acts as a tool for users interested in moving to Metro Manila to choose which
 
 
 ## Dependencies 
-plotly == 5.8.0
+- plotly == 5.8.0
 dash == 2.5.1
 ```
 pip install dash
