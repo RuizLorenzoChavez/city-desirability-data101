@@ -346,7 +346,7 @@ app.layout = html.Div(children=[html.Header(id='home',
                                                                                                  href='#home',
                                                                                                  children=['home']),
                                                                                           html.A(className='btn btn-outline-dark',
-                                                                                                 href='#school-comparison',
+                                                                                                 href='#treemap',
                                                                                                  children=['↓'])])]),
                                                       html.Hr()])
                                    ]), 
@@ -380,7 +380,7 @@ app.layout = html.Div(children=[html.Header(id='home',
                 html.Div(className='container-lg card-full',
                          children=[html.Div(className='container-lg',
                                             children=[html.Div([html.Div(className='col-lg-12',
-                                                                         children=[dcc.Graph(id='treemap2')])],
+                                                                         children=[dcc.Graph(id='treemap')])],
                                                                className='row'),
                                                       html.Br(),
                                                       html.Div(html.Div(className='col-lg-12',
@@ -862,10 +862,10 @@ curr_colors = {'Purely ES': '#9d915a',
 
 #  for treemap
 @app.callback(
-       Output('treemap2', 'figure'),
+       Output('treemap', 'figure'),
        Input('bar', 'clickData')
 )
-def update_treemap2(location):
+def update_treemap(location):
        try:
               select_city = location['points'][0]["x"]
               df = schools.query(f'city == "{select_city.lower()}"')
