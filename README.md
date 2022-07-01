@@ -7,30 +7,30 @@ It acts as a tool for users interested in moving to Metro Manila to choose which
 
 
 ## Dependencies 
-plotly == 5.8.0
+- plotly == 5.8.0
 dash == 2.5.1
 ```
 pip install dash
 ```
 
 
-dash_bootstrap_components == 1.1.0
+- dash_bootstrap_components == 1.1.0
 ```
 pip install dash-bootstrap-components
 ```
 
 
-gunicorn == 20.1.0
+- gunicorn == 20.1.0
 ```
 pip install 
 ```
 
-pandas == 1.4.2
+- pandas == 1.4.2
 ```
 pip install pandas
 ```
 
-geopandas == 0.10.2
+- geopandas == 0.10.2
 
 To download the geopandas library, kindly install the version of the following binaries that match your version of Python.
 Download binaries from this site https://www.lfd.uci.edu/~gohlke/pythonlibs/
