@@ -67,7 +67,7 @@ city_colors = {'quezon': '#9369a8',
                'san juan': '#ec8b83'}
 
 #  creating a static bar chart
-bar_chart = px.bar(city_dist, 
+bar_chart = px.bar(city_dist,
                    x=city_dist.city.str.capitalize(),
                    y='count',
                    width=1200,
